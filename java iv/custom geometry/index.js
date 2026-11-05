@@ -10,12 +10,21 @@ const camera = new THREE.PerspectiveCamera(
 
 camera.position.z = 3;
 
-const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
-const cubeMaterial = new THREE.MeshBasicMaterial({color: 0x00ff00});
-const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-scene.add(cube);
+const geometry = new THREE.BufferGeometry();
+ 
+const positions = new Float32Array([
+   0, 0, 0,   // kulmi 0
+   1, 0, 0,   // kulmi 1
+   0, 1, 0,   // kulmi 2
+]);
+geometry.setAttribute('position',
+   new THREE.BufferAttribute(positions, 3)); // 3 për kulm
+const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
 
 const light = new THREE.AmbientLight(0xffffff, 0.6); 
+
 scene.add(light);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -26,8 +35,6 @@ document.getElementById('scene').appendChild(renderer.domElement);
 
 function animate() {
     requestAnimationFrame(animate);
-    cube.rotation.y += 0.01;
-    cube.rotation.x += 0.01;
     renderer.render(scene, camera);
 }
 animate();
